@@ -1,0 +1,1 @@
+print("Hello World, this is kinoko, python script testing")
