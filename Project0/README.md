@@ -28,43 +28,90 @@ Ensure you have Docker installed on your system.
 
 ### Running the Nginx Web Server
 
-1. Pull the latest Nginx image
+1. Pull the latest Nginx image:
 
     ```sh
-    docker pull nginx:latest
+        docker pull nginx:latest
+    ```
 
-2. Run an Nginx container
+
+2. Run the Nginx container with the default page:
+
     ```sh
-    docker run -d -p 8080:80 --name my-nginx nginx:latest
+        docker run -d -p 8080:80 --name my-nginx nginx:latest
+    ```
+3. Open http://localhost:8080 in your browser to view the default Nginx page.
 
-3. Open http://localhost:8080 in your browser to view the default page. 
+### Switching to Custom Nginx Page
+
+1. Ensure your ``index.html`` file is updated in your project directory.
+
+2. Stop and remove the existing Nginx container:
+
+    ```sh
+        docker stop my-nginx
+    ```
+
+    ```sh
+        docker rm my-nginx
+    ```
+
+3. Run a new Nginx container with the custom index.html mounted:
+
+    ```sh
+        docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html --name my-nginx nginx:latest
+    ```
+
+4. Open http://localhost:8080 to see your updated custom Nginx page.
+
+### Switching Back to Default Nginx Page
+
+1. Stop and remove the custom Nginx container:
+
+    ```sh 
+        docker stop my-nginx
+    ```
+    ```sh
+        docker rm my-nginx
+    ```
+
+2. Run a new Nginx container without mounting a custom file:
+
+    ```sh
+        docker run -d -p 8080:80 --name my-nginx nginx:latest
+    ```
+
+3. Open http://localhost:8080 to see the default Nginx page again.
+
+    ```sh
+        docker pull nginx:latest
+    ```
+
+4. Run an Nginx container:
+
+    ```sh
+        docker run -d -p 8080:80 --name my-nginx nginx:latest
+    ```
+
+5. Open http://localhost:8080 in your browser to view the default page.
 
 ### Modifying the Default Nginx Page
 
-1. Ensure your index.html file is updated in the project directory.
+1. Ensure your ```index.html``` file is updated in the project directory.
 
 2. Stop and remove any existing Nginx container (if running):
 
     ```sh
-    docker ps  # Get the running container ID
-    docker stop my-nginx  # Stop the container
-    docker rm my-nginx  # Remove the container
+        docker ps  # Get the running container ID
+        docker stop my-nginx  # Stop the container
+        docker rm my-nginx  # Remove the container
+    ```
 
-3. Run the container with a volume mount to serve your updated index.html:
+4. Run the container with a volume mount to serve your updated index.html:
+    ```sh
+        docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html --name my-nginx nginx:latest
 
-```sh
-    docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html --name my-nginx nginx:latest
-```
-    
-```sh
-    docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html nginx:latest 
-```
+        docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html nginx:latest
+    ```
 
-4. Open http://localhost:8080 in your browser to see your updated custom Nginx page.
-
-### Contributors
-- My Lu
-- Fozhan Babaeiyan 
-- Kathryn Woest
-
-
+5. Open http://localhost:8080 in your browser to see your updated custom Nginx page.
