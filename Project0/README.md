@@ -46,23 +46,24 @@ Ensure you have Docker installed on your system.
 
 1. Ensure your ``index.html`` file is updated in your project directory.
 
-2. Stop and remove the existing Nginx container:
+2. Get the container_id
 
     ```sh
-        docker stop my-nginx
+        docker ps
     ```
+
+3. then manually copy your file into the container
+    ```sh
+        docker cp index.html <contain_id>:/usr/share/nginx/html/index.html
+    ```
+
+4. Then reload the nginx:
 
     ```sh
-        docker rm my-nginx
+        docker exec -it <container_id> nginx -s reload
     ```
 
-3. Run a new Nginx container with the custom index.html mounted:
-
-    ```sh
-        docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html --name my-nginx nginx:latest
-    ```
-
-4. Open http://localhost:8080 to see your updated custom Nginx page.
+5. Open http://localhost:8080 to see your updated custom Nginx page.
 
 ### Switching Back to Default Nginx Page
 
